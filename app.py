@@ -42,12 +42,8 @@ def get_prediction():
     features = [sepal_length, petal_length]
 
     # Load pickled model file
-    url = "https://github.com/BartekM23/RTA_model_api/raw/main/model.pkl"
-    response = requests.get(url)
-    response.raise_for_status()  # Ensure the request was successful
-
-    picklefile = io.BytesIO(response.content)
-    model = pickle.load(picklefile)
+    with open('model.pkl',"rb") as picklefile:
+        model = pickle.load(picklefile)
         
     # Predict the class using the model
     predicted_class = int(model.predict(features))
@@ -65,14 +61,10 @@ def post_predict():
     features = [sepal_length, petal_length]
 
     # Load pickled model file
-    # Load pickled model file
-    url = "https://github.com/BartekM23/RTA_model_api/raw/main/model.pkl"
-    response = requests.get(url)
-    response.raise_for_status()  # Ensure the request was successful
-
-    picklefile = io.BytesIO(response.content)
-    model = pickle.load(picklefile)
-    
+    with open('model.pkl',"rb") as picklefile:
+        model = pickle.load(picklefile)
+        
+    # Predict the class using the model
     predicted_class = int(model.predict(features))
     output = dict(features=features, predicted_class=predicted_class)
     # Return a json object containing the features and prediction
@@ -80,4 +72,4 @@ def post_predict():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=5000)
